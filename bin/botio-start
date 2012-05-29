@@ -1,0 +1,39 @@
+#! /bin/bash
+
+DIR=`dirname ${BASH_SOURCE[0]}`;
+PID_FILE=$DIR/../gaia-botio.pid
+
+touch $PID_FILE;
+
+# check if there is a bot currently running
+if [ -s $PID_FILE ];
+then
+  OLD_PID=`cat $PID_FILE`
+  if ps ax | grep -v grep | grep $OLD_PID > /dev/null
+  then
+    echo "botio ($OLD_PID) is currently running please stop it first"
+    exit 1
+  fi
+fi
+
+source $DIR/../start-env.sh
+
+touch $DIR/../logs/out.log
+touch $DIR/../logs/error.log
+
+nohup botio start --user $GAIA_BOTIO_USER --pwd $GAIA_BOTIO_PWD \
+  >> $DIR/../logs/out.log \
+  2>> $DIR/../logs/error.log < /dev/null &
+
+rm -f $PID_FILE;
+echo `jobs -p | tail -n 1` >> $PID_FILE;
+
+if [ $? -ne 0 ];
+then
+  echo "ERR: botio has not started see logs/error.log";
+else
+  echo "gaia botio started: last five lines of output:"
+  tail -n 5 $DIR/../logs/out.log
+fi
+
+ps ax | grep -v grep | grep ssh > /dev/null

@@ -1,0 +1,19 @@
+#! /bin/bash
+
+DIR=`dirname ${BASH_SOURCE[0]}`;
+PID_FILE=$DIR/../gaia-botio.pid
+
+# check if there is a bot currently running
+if [ -s $PID_FILE ];
+then
+  OLD_PID=`cat $PID_FILE`
+  if ps ax | grep -v grep | grep $OLD_PID > /dev/null
+  then
+    echo "stopping botio ...";
+    kill $OLD_PID;
+    exit 0
+  else
+    echo "bot is not running";
+    exit 1
+  fi
+fi

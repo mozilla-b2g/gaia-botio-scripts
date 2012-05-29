@@ -1,0 +1,2 @@
+GAIA_BOTIO_USER=gaia-botio
+GAIA_BOTIO_PWD=somepass
