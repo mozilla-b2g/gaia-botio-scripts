@@ -1,10 +1,17 @@
 var botio = require(process.env['BOTIO_MODULE']);
 require('shelljs/global');
 
-echo('These are the files in your repo:');
-ls().forEach(function(file) {
-  echo('  '+file);
-});
+cmd = [
+  'GAIA_PORT=8777',
+  'REPORTER=TAP',
+  'TEST_OUTPUT=stdout',
+  'TEST_FAST=0',
+  'TEST_AGENT_SERVER=ws://50.116.11.35:8789',
+  'B2G_HOME=/data/bot.io/b2g',
+  'GAIA_DOMAIN=pr1.gaiamobile.org',
+  'ci/unit/pr.sh emulator'
+];
 
-botio.message('#### Hello world');
-botio.message('Your Botio installation works! View full output for the list of files in this repo');
+exec(cmd.join(' '), {silent:false, async:true}, function(err, output) {
+  botio.message('Finished running tests');
+});
