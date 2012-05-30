@@ -9,7 +9,7 @@ cmd = [
   'TEST_AGENT_SERVER=ws://50.116.11.35:8789',
   'B2G_HOME=/data/bot.io/b2g',
   'GAIA_DOMAIN=pr1.gaiamobile.org',
-  'ci/unit/pr.sh emulator'
+  'tools/ci/unit/pr.sh emulator'
 ];
 
 exec(cmd.join(' '), {silent:false, async:true}, function(err, output) {
