@@ -2,7 +2,7 @@
 var fsPath = require('path'),
     fs = require('fs'),
     MOCHA_RESULTS = 'mocha-test-results.txt',
-    template = fs.readFileSync('templates/test.html', 'utf8');
+    template = fs.readFileSync(__dirname + '/templates/test.html', 'utf8');
 
 function Create(gaiaDir, title, outputFile) {
   var results = fs.readFileSync(fsPath.join(gaiaDir, MOCHA_RESULTS), 'utf8'),
