@@ -29,7 +29,7 @@ exec(cmd.join(' '), {silent: false, async: true}, function(err, output) {
     botio.message('+ **B2G Desktop:** Passed');
   } else {
     botio.message('+ **B2G Desktop:** FAILED');
-    failed = true;
+    fail = true;
   }
 
   botio.message(
