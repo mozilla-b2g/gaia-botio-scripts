@@ -1,7 +1,7 @@
 //this code is probably horrible but it will get the job done.
 var fsPath = require('path'),
     fs = require('fs'),
-    MOCHA_RESULTS = 'mocha-test-results.html',
+    MOCHA_RESULTS = 'mocha-test-results.txt',
     template = fs.readFileSync('templates/test.html', 'utf8');
 
 function Create(gaiaDir, title, outputFile) {
