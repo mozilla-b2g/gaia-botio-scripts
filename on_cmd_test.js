@@ -12,6 +12,8 @@ cmd = [
   'tools/ci/unit/pr.sh emulator'
 ];
 
-exec(cmd.join(' '), {silent:false, async:true}, function(err, output) {
+exec('make update-common');
+
+exec(cmd.join(' '), {silent: false, async: true}, function(err, output) {
   botio.message('Finished running tests');
 });
