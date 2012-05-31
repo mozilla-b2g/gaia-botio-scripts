@@ -5,7 +5,7 @@ cmd = [
   'DISPLAY=:99',
   'GAIA_PORT=8777',
   'REPORTER=TAP',
-  'TEST_OUTPUT=' + botio.public_dir + '/mocha-test-results.txt',
+  'TEST_OUTPUT=' + botio.private_dir + '/mocha-test-results.txt',
   'TEST_FAST=0',
   'TEST_AGENT_SERVER=ws://50.116.11.35:8789',
   'B2G_HOME=/data/botio/b2g-desktop/obj-x86_64-unknown-linux-gnu/',
@@ -18,10 +18,25 @@ exec('Xvfb :99 &');
 exec('make update-common');
 
 exec(cmd.join(' '), {silent: false, async: true}, function(err, output) {
+  var fail = false;
   require('./create-test-results')(
     botio.private_dir,
     'B2G Desktop Results',
     botio.public_dir + '/b2g-desktop-results.html'
   );
-  botio.message('B2G Desktop: ' + botio.public_url + '/b2g-desktop-results.html');
+
+  if (output.match('GAIA: TESTS PASS')) {
+    botio.message('+ **B2G Desktop:** Passed');
+  } else {
+    botio.message('+ **B2G Desktop:** FAILED');
+    failed = true;
+  }
+
+  botio.message(
+    'B2G Desktop: ' + botio.public_url + '/b2g-desktop-results.html'
+  );
+
+  if (fail) {
+    exit(1);
+  }
 });
