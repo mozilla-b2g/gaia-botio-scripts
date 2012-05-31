@@ -33,7 +33,7 @@ exec(cmd.join(' '), {silent: false, async: true}, function(err, output) {
   }
 
   botio.message(
-    'B2G Desktop: ' + botio.public_url + '/b2g-desktop-results.html'
+    ' : ' + botio.public_url + '/b2g-desktop-results.html'
   );
 
   if (fail) {
