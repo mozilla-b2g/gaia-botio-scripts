@@ -1,4 +1,6 @@
-var botio = require(process.env['BOTIO_MODULE']);
+var botio = require(process.env['BOTIO_MODULE']),
+    utils = require('./lib/utils');
+
 require('shelljs/global');
 
 var fail = false;
@@ -18,7 +20,7 @@ exec('make lint', {silent: false, async: true}, function(error, output) {
 
   try {
     processed = require('./lib/format-lint')(
-      botio.public_url,
+      utils.prRepoUrl(botio),
       output
     );
   } catch (e) {
