@@ -9,15 +9,26 @@ var fail = false;
 echo();
 echo('>> Linting');
 
-exec('make lint', {silent:false, async:true}, function(error, output) {
-  if(error > 0) {
+exec('make lint', {silent: false, async: true}, function(error, output) {
+  var processed;
+
+  if (error > 0) {
     fail = true;
   }
 
+  try {
+    processed = require('./lib/format-lint')(
+      botio.base_url,
+      output
+    );
+  } catch (e) {
+    echo('!!failed to process lint output: ' + e.message + '\n' + e.stack);
+  }
+
   if (!fail) {
-    botio.message('+ **Lint:** Passed');
+    botio.message('+ **Lint:** Passed\n----\n');
   } else {
-    botio.message('+ **Lint:** FAILED');
+    botio.message('+ **Lint:** FAILED\n----\n' + processed);
   }
 
   if (fail)
