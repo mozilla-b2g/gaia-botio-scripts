@@ -18,7 +18,7 @@ exec('make lint', {silent: false, async: true}, function(error, output) {
 
   try {
     processed = require('./lib/format-lint')(
-      botio.base_url,
+      botio.public_url,
       output
     );
   } catch (e) {
@@ -28,7 +28,9 @@ exec('make lint', {silent: false, async: true}, function(error, output) {
   if (!fail) {
     botio.message('+ **Lint:** Passed\n----\n');
   } else {
-    botio.message('+ **Lint:** FAILED\n----\n' + processed);
+    botio.message(
+      'Lint: FAILED<br />----' + processed.replace(/\n/g, '<br />')
+    );
   }
 
   if (fail)
