@@ -5,13 +5,15 @@ var fsPath = require('path'),
     template = fs.readFileSync(__dirname + '/templates/test.html', 'utf8');
 
 function Create(gaiaDir, title, outputFile) {
-  var results = fs.readFileSync(fsPath.join(gaiaDir, MOCHA_RESULTS), 'utf8'),
-      output = template;
+  var path = fsPath.join(gaiaDir, MOCHA_RESULTS);
 
-  output = output.replace('{{TITLE}}', title);
-  output = output.replace('{{BODY}}', results);
-
-  fs.writeFileSync(outputFile, output, 'utf8');
+  if (fs.existsSync(path)) {
+    var results = fs.readFileSync(fsPath.join(gaiaDir, MOCHA_RESULTS), 'utf8');
+    var output = template;
+    output = output.replace('{{TITLE}}', title);
+    output = output.replace('{{BODY}}', results);
+    fs.writeFileSync(outputFile, output, 'utf8');
+  }
 }
 
 module.exports = Create;

@@ -2,6 +2,7 @@ var botio = require(process.env['BOTIO_MODULE']);
 require('shelljs/global');
 
 cmd = [
+  'WGET_OPTS=-nv',
   'DISPLAY=:99',
   'REPORTER=TAP',
   'TEST_OUTPUT=' + botio.private_dir + '/mocha-test-results.txt',
@@ -13,12 +14,22 @@ cmd = [
   'tools/ci/unit/b2g-desktop.sh'
 ];
 
+var pending = 2;
+
+function next() {
+  if (!(--pending)) {
+    runTests();
+  }
+}
+
 exec('Xvfb :99 &');
-exec('make update-common');
-exec('cp -R ' + __dirname + '/envs/xulrunner-sdk ' + botio.private_dir);
+
+exec('make update-common', { silent: false, async: true }, function() {
+  next();
+});
 
 exec(__dirname + '/envs/update.sh', { silent: false, async: true }, function() {
-  runTests();
+  next();
 });
 
 function runTests() {
